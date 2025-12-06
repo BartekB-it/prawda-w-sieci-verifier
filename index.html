@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Weryfikacja strony – mObywatel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Biblioteka do skanowania QR -->
+    <script src="https://unpkg.com/html5-qrcode" defer></script>
+
+    <!-- Twój skrypt z logiką sprawdzania -->
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Górny pasek jak w mObywatelu -->
+        <header class="top-bar">
+            <button type="button" class="back-link">
+                <span class="back-icon">‹</span>
+                <span>Wróć</span>
+            </button>
+            <span class="top-bar-title">Zgłoś incydent w sieci</span>
+        </header>
+
+        <!-- Główna treść ekranu -->
+        <main class="app-main">
+            <h1 class="screen-title">Zweryfikuj stronę internetową</h1>
+            <p class="screen-subtitle">
+                Wklej adres strony internetowej, aby sprawdzić czy jest to
+                autentyczna strona administracji publicznej.
+            </p>
+
+            <!-- Karta z polem tekstowym jak na makiecie -->
+            <section class="url-card">
+                <label class="url-label" for="url-input">Adres strony</label>
+                <textarea
+                    id="url-input"
+                    class="url-textarea"
+                    placeholder="np. https://www.gov.pl/web/gov"
+                ></textarea>
+            </section>
+
+            <!-- WYNIKI WERYFIKACJI -->
+            <section id="results" class="results"></section>
+
+            <!-- Akordeon z informacjami o bezpieczeństwie -->
+            <section class="accordion">
+                <button
+                    type="button"
+                    id="security-toggle"
+                    class="accordion-header"
+                    aria-expanded="false"
+                >
+                    <div class="accordion-title">
+                        <span class="accordion-icon">i</span>
+                        <span>Informacje o bezpieczeństwie</span>
+                    </div>
+                    <span class="accordion-arrow">⌄</span>
+                </button>
+
+                <div id="security-content" class="accordion-content" hidden>
+                    <div class="info-box">
+                        <h2>Jak weryfikujemy bezpieczeństwo?</h2>
+                        <ul>
+                            <li>
+                                <strong>Domena .gov.pl</strong> – sprawdzamy, czy adres
+                                kończy się na <code>.gov.pl</code>.
+                            </li>
+                            <li>
+                                <strong>Certyfikat SSL / HTTPS</strong> – sprawdzamy, czy
+                                adres używa HTTPS oraz czy certyfikat przechodzi weryfikację
+                                po stronie serwera.
+                            </li>
+                            <li>
+                                <strong>Lista oficjalnych domen</strong> – sprawdzamy,
+                                czy domena znajduje się w lokalnym pliku
+                                <code>domains.json</code> (kompendium zaufanych portali).
+                            </li>
+                        </ul>
+                        <p class="link-row">
+                            Oficjalne serwisy gov.pl:
+                            <a href="https://www.gov.pl/web/gov" target="_blank" rel="noopener noreferrer">
+                                sprawdź listę w serwisie gov.pl
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Niebieska karta z informacją o możliwości skanowania QR -->
+            <aside class="qr-info-card">
+                <div class="qr-info-icon">i</div>
+                <div class="qr-info-text">
+                    <p>
+                        Możesz także zweryfikować stronę skanując kod QR, który jest na niej wyświetlany.
+                    </p>
+                    <button type="button" id="qr-banner-btn" class="qr-info-link">
+                        Zeskanuj kod QR
+                    </button>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Niebieski przycisk CTA „Dalej” -->
+        <div class="cta-wrapper">
+            <button id="check-btn" class="primary-btn">
+                Dalej
+            </button>
+        </div>
+
+        <!-- Overlay ze skanerem QR -->
+        <section id="qr-section" class="qr-section hidden">
+            <div class="qr-sheet">
+                <h2>Skanowanie kodu QR</h2>
+                <p>
+                    Skieruj aparat na kod QR ze strony, którą chcesz zweryfikować.
+                    Po odczytaniu adresu URL zostanie on automatycznie sprawdzony.
+                </p>
+
+                <div id="qr-reader"></div>
+
+                <button id="qr-stop-btn" class="link-btn">
+                    Zatrzymaj skanowanie
+                </button>
+            </div>
+        </section>
+
+        <!-- Dolny pasek nawigacji jak w mObywatelu -->
+        <nav class="bottom-nav">
+            <!-- Lewy przycisk mock (bez funkcji) -->
+            <button
+                type="button"
+                class="bottom-nav-item bottom-nav-item--muted"
+                aria-disabled="true"
+            >
+                <span class="nav-icon">📄</span>
+                <span class="nav-label">Dokumenty</span>
+            </button>
+
+            <!-- Usługi (wizualnie aktywne, ale logika jest w przycisku "Dalej") -->
+            <button
+                type="button"
+                class="bottom-nav-item bottom-nav-item--active"
+                aria-disabled="true"
+            >
+                <span class="nav-icon">📂</span>
+                <span class="nav-label">Usługi</span>
+            </button>
+
+            <!-- Kod QR – FUNKCJONALNY, odpala skaner -->
+            <button type="button" id="qr-btn" class="bottom-nav-item">
+                <span class="nav-icon">📷</span>
+                <span class="nav-label">Kod QR</span>
+            </button>
+
+            <!-- Prawy przycisk mock (bez funkcji) -->
+            <button
+                type="button"
+                class="bottom-nav-item bottom-nav-item--muted"
+                aria-disabled="true"
+            >
+                <span class="nav-icon">⋯</span>
+                <span class="nav-label">Więcej</span>
+            </button>
+        </nav>
+    </div>
+</body>
+</html>

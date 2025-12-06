@@ -1,0 +1,420 @@
+/* Reset + kolory bazowe */
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #2563eb;
+    --bg-app: #f4f6ff;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg-app);
+}
+
+/* Główna „ramka telefonu” */
+.app-shell {
+    max-width: 420px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #f5f7ff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Górny pasek (Wróć + tytuł) */
+.top-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px 8px;
+    font-size: 14px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: none;
+    background: transparent;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.back-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.top-bar-title {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Główna treść ekranu */
+.app-main {
+    flex: 1;
+    padding: 8px 16px 140px; /* + miejsce na CTA i dolny pasek */
+}
+
+.screen-title {
+    margin: 8px 0 4px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.screen-subtitle {
+    margin: 0 0 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Karta z polem adresu */
+.url-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 12px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    margin-bottom: 16px;
+}
+
+.url-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+.url-textarea {
+    width: 100%;
+    min-height: 110px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    padding: 10px 12px;
+    font-size: 15px;
+    resize: vertical;
+    outline: none;
+}
+
+.url-textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+}
+
+/* Wyniki weryfikacji */
+.results {
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.results ul {
+    padding-left: 18px;
+    margin: 4px 0 0;
+}
+
+.result-ok {
+    color: #15803d;
+}
+
+.result-bad {
+    color: #b91c1c;
+}
+
+.error {
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+/* Accordion z informacjami o bezpieczeństwie */
+
+.accordion {
+    margin-top: 16px;
+}
+
+.accordion-header {
+    width: 100%;
+    border: none;
+    background: #f3f4ff;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-main);
+}
+
+.accordion-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.accordion-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: #e0ebff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--primary);
+}
+
+.accordion-arrow {
+    font-size: 16px;
+    color: var(--text-muted);
+    transition: transform 0.2s ease;
+}
+
+/* Obrót strzałki gdy otwarte */
+#security-toggle[aria-expanded="true"] .accordion-arrow {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    margin-top: 6px;
+}
+
+/* Info box w środku akordeonu */
+.info-box {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #f9fafb;
+    font-size: 13px;
+}
+
+.info-box h2 {
+    margin: 0 0 6px;
+    font-size: 14px;
+}
+
+.info-box ul {
+    padding-left: 18px;
+    margin: 4px 0 8px;
+}
+
+.info-box li {
+    margin-bottom: 3px;
+}
+
+.link-row a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.link-row a:hover {
+    text-decoration: underline;
+}
+
+/* Podsumowanie (zaufana / ostrzeżenie) */
+.summary {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.summary-ok {
+    color: #166534;
+}
+
+.summary-warn {
+    color: #b45309;
+}
+
+/* Niebieski baner z informacją o QR */
+
+.qr-info-card {
+    margin-top: 16px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: #e0edff;
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.qr-info-icon {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--primary);
+    margin-top: 2px;
+}
+
+.qr-info-text p {
+    margin: 0 0 4px;
+    color: var(--text-main);
+}
+
+.qr-info-link {
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-size: 13px;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Przyciski */
+button {
+    font-family: inherit;
+}
+
+.primary-btn {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 16px;
+    padding: 14px 16px;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.primary-btn:active {
+    transform: translateY(1px);
+}
+
+/* Wrapper CTA – przycisk nad dolnym paskiem */
+.cta-wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 72px; /* trochę miejsca nad bottom-nav */
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* Dolny pasek nawigacji */
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 420px;
+    margin: 0 auto;
+    height: 64px;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 9;
+}
+
+.bottom-nav-item {
+    border: none;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.nav-icon {
+    font-size: 18px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+}
+
+.bottom-nav-item--active {
+    color: var(--primary);
+}
+
+/* Mockowe (nieaktywne) */
+.bottom-nav-item--muted {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* Linkowy przycisk (np. zamknięcie QR) */
+.link-btn {
+    border: none;
+    background: transparent;
+    color: var(--primary);
+    padding: 4px 0;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* Overlay skanera QR */
+.qr-section {
+    position: fixed;
+    inset: 0;
+    display: none; /* domyślnie ukryty, .hidden też to wymusza */
+    justify-content: center;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.35);
+    z-index: 30;
+}
+
+.qr-section:not(.hidden) {
+    display: flex;
+}
+
+.qr-sheet {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 16px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.35);
+}
+
+.qr-sheet h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.qr-sheet p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+#qr-reader {
+    width: 100%;
+    min-height: 220px;
+    margin-top: 4px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Helper */
+.hidden {
+    display: none !important;
+}
+
+/* Desktop – wycentrowanie „telefonu” */
+@media (min-width: 768px) {
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}
