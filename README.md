@@ -1,6 +1,6 @@
 # Prawda w sieci – Verifier (weryfikacja linków i kodów QR)
 
-Prototyp mechanizmu, który pomaga obywatelowi sprawdzić, czy strona podająca się za serwis administracji publicznej (domena `gov.pl`) jest zaufana.
+Prototyp mechanizmu, który w docelowej wersji ma działać jako **moduł aplikacji mObywatel** i pomaga obywatelowi sprawdzić, czy strona podająca się za serwis administracji publicznej (domena `gov.pl`) jest zaufana.
 
 Aplikacja pozwala:
 
