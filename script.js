@@ -7,6 +7,16 @@ let trustedDomains = null;      // Set z domenami z domains.json
 let trustedLoaded = false;
 let trustedLoadingError = null;
 
+// Proste escapowanie, żeby uniknąć wstrzykiwania HTML w komunikatach z backendu
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 // ---- ŁADOWANIE LISTY DOMEN Z JSON ----
 async function loadTrustedDomains() {
     const response = await fetch(DOMAINS_JSON_URL);
@@ -142,15 +152,19 @@ async function checkUrl(input) {
 function renderResult(result) {
     const resultsDiv = document.getElementById("results");
 
+    // --- Bezpieczna obsługa błędów (np. z walidacji URL) ---
     if (!result.ok) {
-        resultsDiv.innerHTML = `<p class="error">${result.error}</p>`;
+        const safeError = result.error
+            ? escapeHtml(result.error)
+            : "Wystąpił błąd weryfikacji adresu.";
+        resultsDiv.innerHTML = `<p class="error">${safeError}</p>`;
         return;
     }
 
     const govClass = result.isGovPl ? "result-ok" : "result-bad";
     const tlsSchemeClass = result.isTls ? "result-ok" : "result-bad";
 
-    // Linia o TLS z backendu
+    // --- Linia o TLS z backendu (certyfikat) ---
     let backendTlsLine = "";
     if (result.backendTls === true) {
         backendTlsLine = `
@@ -159,22 +173,26 @@ function renderResult(result) {
             </li>
         `;
     } else if (result.backendTls === false) {
+        const safeBackendErr = result.backendTlsError
+            ? escapeHtml(result.backendTlsError)
+            : "";
         backendTlsLine = `
             <li class="result-bad">
                 Problem z certyfikatem TLS/SSL (backend): <strong>BŁĄD</strong>
-                ${result.backendTlsError ? `(<em>${result.backendTlsError}</em>)` : ""}
+                ${safeBackendErr ? `(<em>${safeBackendErr}</em>)` : ""}
             </li>
         `;
     } else if (result.backendTlsError) {
+        const safeBackendErr = escapeHtml(result.backendTlsError);
         backendTlsLine = `
             <li class="result-bad">
                 Nie udało się zweryfikować certyfikatu TLS po stronie serwera
-                ${result.backendTlsError ? `(<em>${result.backendTlsError}</em>)` : ""}
+                ${safeBackendErr ? `(<em>${safeBackendErr}</em>)` : ""}
             </li>
         `;
     }
 
-    // Linia o białej liście (domains.json)
+    // --- Linia o białej liście (domains.json) ---
     let trustedLine = "";
     if (result.isTrusted === true) {
         trustedLine = `
@@ -189,27 +207,34 @@ function renderResult(result) {
             </li>
         `;
     } else {
+        const safeTrustedErr = result.trustedErrorMsg
+            ? escapeHtml(result.trustedErrorMsg)
+            : "";
         trustedLine = `
             <li class="result-bad">
                 Nie udało się sprawdzić w domains.json
-                ${result.trustedErrorMsg ? `(<em>${result.trustedErrorMsg}</em>)` : ""}
+                ${safeTrustedErr ? `(<em>${safeTrustedErr}</em>)` : ""}
             </li>
         `;
     }
 
-    // Podsumowanie ogólne: pozytywne / ostrzeżenie
-    let summaryHtml = "";
+    // --- Podsumowanie ogólne: ZAOSTRZONA polityka ---
+    // Zaufana TYLKO jeśli:
+    // - domena gov.pl
+    // - TLS po stronie backendu zweryfikowany jako OK
+    // - domena na liście oficjalnych domen (domains.json)
     const looksTrusted =
         result.isGovPl &&
-        (result.backendTls === true || (result.backendTls === null && result.isTls)) &&
+        result.backendTls === true &&
         result.isTrusted === true;
 
+    let summaryHtml = "";
     if (looksTrusted) {
         summaryHtml = `
             <p class="summary summary-ok">
                 Strona wygląda na <strong>zaufaną</strong> wg dostępnych kryteriów
-                (domena gov.pl, HTTPS, biała lista). Mimo to zawsze zweryfikuj,
-                czy adres jest dokładnie tym, którego oczekujesz.
+                (domena gov.pl, poprawny certyfikat TLS/SSL, biała lista).
+                Mimo to zawsze zweryfikuj, czy adres jest dokładnie tym, którego oczekujesz.
             </p>
         `;
     } else {
@@ -223,7 +248,7 @@ function renderResult(result) {
     }
 
     resultsDiv.innerHTML = `
-        <p><strong>Domena:</strong> ${result.domain}</p>
+        <p><strong>Domena:</strong> ${escapeHtml(result.domain)}</p>
         <ul>
             <li class="${govClass}">
                 Domena rządowa (.gov.pl): <strong>${result.isGovPl ? "TAK" : "NIE"}</strong>
@@ -291,11 +316,15 @@ async function startQrScanner() {
         );
     } catch (err) {
         qrScanning = false;
+        const safeErr = err && err.message
+            ? escapeHtml(err.message)
+            : "Nieznany błąd podczas uruchamiania skanera QR.";
         resultsDiv.innerHTML = `<p class="error">
-            Nie udało się uruchomić skanera QR: ${err}
+            Nie udało się uruchomić skanera QR: ${safeErr}
         </p>`;
     }
 }
+
 
 function stopQrScanner() {
     const qrSection = document.getElementById("qr-section");
