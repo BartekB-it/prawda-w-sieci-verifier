@@ -1,5 +1,7 @@
 # Prawda w sieci – Verifier (weryfikacja linków i kodów QR)
 
+DEMO: [https://prawda-w-sieci-verifier.onrender.com/](https://prawda-w-sieci-verifier.onrender.com/)
+
 Prototyp mechanizmu, który w docelowej wersji ma działać jako **moduł aplikacji mObywatel** i pomaga obywatelowi sprawdzić, czy strona podająca się za serwis administracji publicznej (domena `gov.pl`) jest zaufana.
 
 Aplikacja pozwala:
